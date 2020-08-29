@@ -1,0 +1,44 @@
+services:
+  basketapi:
+    build:
+      context: D:\Skola\new\TentaMH
+      dockerfile: BasketAPI/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: basketapi
+    links:
+    - redis
+    ports:
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\Max\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\Max\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  catalogapi:
+    build:
+      context: D:\Skola\new\TentaMH
+      dockerfile: CatalogAPI/Dockerfile
+    depends_on:
+    - sql-server-db
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: https://+:443;http://+:80
+    image: catalogapi
+    ports:
+    - target: 80
+    - target: 443
+    volumes:
+    - C:\Users\Max\AppData\Roaming\ASP.NET\Https:/root/.aspnet/https:ro
+    - C:\Users\Max\AppData\Roaming\Microsoft\UserSecrets:/root/.microsoft/usersecrets:ro
+  redis:
+    image: redis
+  sql-server-db:
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: change_this_password
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+    - published: 1433
+      target: 1433
+version: '3.4'

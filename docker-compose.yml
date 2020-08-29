@@ -1,0 +1,28 @@
+version: '3.4'
+
+services:
+  basketapi:
+    image: ${DOCKER_REGISTRY-}basketapi
+    build:
+      context: .
+      dockerfile: BasketAPI/Dockerfile
+    links:
+    - redis
+  redis:
+    image: redis
+  catalogapi:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: CatalogAPI/Dockerfile
+    depends_on:
+    - sql-server-db
+
+  sql-server-db:
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "change_this_password"
+      ACCEPT_EULA: "Y"
+   

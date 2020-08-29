@@ -1,0 +1,2 @@
+obj\Release\netcoreapp3.1/Basket.cs \
+obj\Release\netcoreapp3.1/BasketGrpc.cs: Proto/basket.proto
